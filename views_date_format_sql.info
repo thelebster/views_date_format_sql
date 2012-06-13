@@ -1,5 +1,5 @@
 name = Views Date Format SQL
-description = Allows to format date fields using SQL. This enables group aggregation.
+description = Allows to format date fields using SQL. This enables group aggregation. (Needs 'Date Views' to work with Date-module fields.)
 dependencies[] = views
 package = Views
 core = 7.x

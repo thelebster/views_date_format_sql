@@ -8,7 +8,18 @@
  * Implements hook_views_data_alter().
  */
 function views_date_format_sql_views_data_alter(&$data) {
-//dpm($data);
-  $data['node']['created']['field']['handler'] = 'views_date_format_sql_handler_field_date';
-  $data['node']['changed']['field']['handler'] = 'views_date_format_sql_handler_field_date';
+  // loops through fields definitions looking for date fields
+  // and change the standard date handler with our own.
+  foreach($data as $module => &$table) {
+    foreach($table as $id => &$field) {
+      if (is_array($field) &&
+          array_key_exists('field', $field) &&
+          is_array($field['field']) &&
+          array_key_exists('handler', $field['field']) &&
+         ($field['field']['handler'] == 'views_handler_field_date')) {
+          $field['field']['handler'] = 'views_date_format_sql_handler_field_date';
+      }
+    }
+  }
+
 }
