@@ -6,4 +6,5 @@ core = 7.x
 files[] = views_date_format_sql.module
 
 ; Views handlers
-files[] = includes/views_date_format_sql_handler_field_date.inc
+files[] = includes/views_date_format_sql_handler_date.inc
+files[] = includes/views_date_format_sql_handler_date_field.inc

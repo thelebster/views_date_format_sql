@@ -7,7 +7,8 @@
 /**
  * Allows to removes the date formatting from render() and put it in query().
  */
-class views_date_format_sql_handler_field_date extends views_handler_field_date {
+class views_date_format_sql_handler_date extends views_handler_field_date {
+
   function option_definition() {
     $options = parent::option_definition();
 
@@ -37,7 +38,8 @@ class views_date_format_sql_handler_field_date extends views_handler_field_date 
 
     $format = $this->options['date_format'];
     $custom_format = $this->options['custom_date_format'];
-    $format_string = $this->get_date_format($format, $custom_format);
+    $format_string = _views_date_format_sql_get_date_format($format, $custom_format);
+
     $formula = views_date_sql_format($format_string, "$this->table_alias.$this->real_field");
 
     $this->field_alias = $this->query->add_field(NULL, $formula, "{$this->table_alias}_{$this->real_field}", $params);
@@ -54,36 +56,4 @@ class views_date_format_sql_handler_field_date extends views_handler_field_date 
     return $this->get_value($values);
   }
 
-  /**
-   * Helper to retrieve the format to a given date format name.
-   * see includes/common.inc:function format_date()
-   */
-  function get_date_format($type = 'medium', $format = '') {
-    switch ($type) {
-      case 'short':
-        $format = variable_get('date_format_short', 'm/d/Y - H:i');
-        break;
-
-      case 'long':
-        $format = variable_get('date_format_long', 'l, F j, Y - H:i');
-        break;
-
-      case 'custom':
-        // No change to format.
-        break;
-
-      case 'medium':
-      default:
-        // Retrieve the format of the custom $type passed.
-        if ($type != 'medium') {
-          $format = variable_get('date_format_' . $type, '');
-        }
-        // Fall back to 'medium'.
-        if ($format === '') {
-          $format = variable_get('date_format_medium', 'D, m/d/Y - H:i');
-        }
-        break;
-    }
-    return $format;
-  }
 }
