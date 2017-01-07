@@ -38,7 +38,7 @@ class views_date_format_sql_handler_date_field extends views_handler_field_field
     $field_type = ($this->field_info['type'] == 'datestamp') ? 'int' : $this->field_info['type'];
 
     // If this is a date module filed we have to get the storage field type.
-    $formula = views_date_sql_format($format_string, "$this->table_alias.$this->real_field", $field_type);
+    $formula = views_date_sql_format($format_string, "$this->table_alias.$this->real_field", $field_type, 0);
     $this->query->fields[$this->aliases[$this->real_field]]['field'] = $formula;
     $this->query->fields[$this->aliases[$this->real_field]]['table'] = NULL;
   }
