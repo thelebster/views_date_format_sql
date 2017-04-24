@@ -23,7 +23,7 @@ class views_date_format_sql_handler_date extends views_handler_field_date {
     $form['format_date_sql'] = array(
       '#type' => 'checkbox',
       '#title' => t('Use SQL to format date'),
-      '#description' => t('Use the SQL databse to format the date. This enables date values to be used in grouping aggregation.'),
+      '#description' => t('Use the SQL database to format the date. This enables date values to be used in grouping aggregation.'),
       '#default_value' => $this->options['format_date_sql'],
     );
   }
