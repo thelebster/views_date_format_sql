@@ -4,7 +4,7 @@ namespace Drupal\views_date_format_sql\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ResultRow;
-use Drupal\views\Plugin\views\field\Field;
+use Drupal\views\Plugin\views\field\EntityField;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -17,7 +17,7 @@ use Drupal\Core\Render\Element;
  *
  * @ViewsField("views_date_format_sql_field")
  */
-class ViewsDateFormatSqlField extends Field {
+class ViewsDateFormatSqlField extends EntityField {
 
   private $format;
   private $format_string;
@@ -87,23 +87,20 @@ class ViewsDateFormatSqlField extends Field {
     }
 
     // Add additional fields (and the table join itself) if needed.
-    if ($this->add_field_table($use_groupby)) {
-      $this->ensureMyTable();
-      $this->setDateFormat();
+    $this->add_field_table($use_groupby);
+    $this->ensureMyTable();
+    $this->setDateFormat();
 
-      // Add the field.
-      $params = $this->options['group_type'] !== 'group' ? array('function' => $this->options['group_type']) : array();
+    // Add the field.
+    $params = $this->options['group_type'] !== 'group' ? array('function' => $this->options['group_type']) : array();
 
-      $formula = $this->query->getDateFormat("FROM_UNIXTIME($this->tableAlias.$this->realField)", $this->format_string);
+    $formula = $this->query->getDateFormat("FROM_UNIXTIME($this->tableAlias.$this->realField)", $this->format_string);
 
-      $this->field_alias = $this->query->addField(NULL, $formula, "{$this->tableAlias}_{$this->realField}", $params);
-      $this->query->addGroupBy($this->field_alias);
+    $this->field_alias = $this->query->addField(NULL, $formula, "{$this->tableAlias}_{$this->realField}", $params);
+    $this->query->addGroupBy($this->field_alias);
 
-      $this->aliases[$this->realField] = $this->field_alias;
-    }
-    else {
-      $this->setDateFormat();
-    }
+    $this->aliases[$this->realField] = $this->field_alias;
+    $this->setDateFormat();
 
     // Let the entity field renderer alter the query if needed.
     $this->getEntityFieldRenderer()->query($this->query, $this->relationship);
