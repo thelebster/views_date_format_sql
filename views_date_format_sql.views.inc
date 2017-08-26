@@ -11,18 +11,24 @@
 function views_date_format_sql_views_data_alter(&$data) {
   // Loops through fields definitions looking for timestamp fields
   // and change the standard date handler with our own.
-  foreach ($data as $module => &$table) {
+  foreach ($data as $table_name => &$table) {
     // Skip files because they have very specific fields.
     if ($table['table']['provider'] === 'file') {
       continue;
     }
 
     foreach ($table as $id => &$field) {
-      if (empty($field['field']['id']) || empty($field['argument']['id'])) {
-        continue;
+      // check to see if the field being used here is a field_api timestamp
+      if(!empty($field['field']['entity_type']) && !empty($field['field']['field_name'])){
+        $field_storage = \Drupal\field\Entity\FieldStorageConfig::loadByName($field['field']['entity_type'], $field['field']['field_name']);
+        if($field_storage->getType() == 'timestamp') {
+          $field['field']['id'] = 'views_date_format_sql_field';
+        }
       }
-      if ($field['field']['id'] === 'field' && $field['argument']['id'] === 'date') {
-        $field['field']['id'] = 'views_date_format_sql_field';
+      else {
+        if ($field['field']['id'] === 'field' && $field['argument']['id'] === 'date') {
+          $field['field']['id'] = 'views_date_format_sql_field';
+        }
       }
     }
   }
