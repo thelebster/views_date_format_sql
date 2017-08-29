@@ -99,7 +99,7 @@ class ViewsDateFormatSqlField extends EntityField {
     $this->field_alias = $this->query->addField(NULL, $formula, "{$this->tableAlias}_{$this->realField}", $params);
     $this->query->addGroupBy($this->field_alias);
 
-    $this->aliases[$this->realField] = $this->field_alias;
+    $this->aliases[$this->definition['field_name']] = $this->field_alias;
     $this->setDateFormat();
 
     // Let the entity field renderer alter the query if needed.
