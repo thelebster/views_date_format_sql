@@ -13,7 +13,7 @@ function views_date_format_sql_views_data_alter(&$data) {
   // and change the standard date handler with our own.
   foreach ($data as $table_name => &$table) {
     // Skip files because they have very specific fields.
-    if ($table['table']['provider'] === 'file') {
+    if (isset($table['table']['provider']) && $table['table']['provider'] === 'file') {
       continue;
     }
 
