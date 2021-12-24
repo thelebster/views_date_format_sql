@@ -1,0 +1,13 @@
+{
+    "name": "drupal/views_date_format_sql",
+    "type": "drupal-module",
+    "description": "",
+    "homepage": "https://www.drupal.org/project/views_date_format_sql",
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "require": {
+      "drupal/core": "^8.7|^9.0"
+    },
+    "support": {
+    }
+}
